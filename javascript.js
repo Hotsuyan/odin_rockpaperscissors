@@ -28,11 +28,21 @@ const rock = document.getElementById("rock");
 const paper = document.getElementById("paper");
 const scissors = document.getElementById("scissors");
 
-rock.addEventListener("click",function(){playRound("rock",computerPlay)});
-paper.addEventListener("click",function(){ playRound("paper",computerPlay)});
-scissors.addEventListener("click",function(){ playRound("scissors",computerPlay)});
+function playRock(){
+    playRound("rock");
+}
+function playPaper(){
+    playRound("paper");
+}
+function playScissors(){
+    playRound("scissors");
+}
 
-function playRound(playerSelectionLower,computerPlay){
+rock.addEventListener("click",playRock);
+paper.addEventListener("click",playPaper);
+scissors.addEventListener("click",playScissors);
+
+function playRound(playerSelectionLower){
     
     let computerselection = computerPlay();
  
@@ -75,3 +85,4 @@ function disableButtons() {
         elem.disabled = true;
     })
 }
+
