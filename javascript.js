@@ -12,49 +12,66 @@ function computerPlay(){
 let winCount = 0;
 let loseCount = 0;
 let score = [winCount,loseCount];
+let playerSelection = "";
+let container = document.getElementById("container");
 
-function playRound(computerPlay){
-    let playerSelection = prompt("Choose your weapon!");
+const scorePlayer = document.querySelector('.player-score');
+const scoreComputer = document.querySelector('.computer-score');
+
+const message = document.querySelector('.results');
+
+scorePlayer.textContent = winCount;
+scoreComputer.textContent = loseCount;
+
+const buttons = document.querySelectorAll("button");
+const rock = document.getElementById("rock");
+const paper = document.getElementById("paper");
+const scissors = document.getElementById("scissors");
+
+rock.addEventListener("click",function(){playRound("rock",computerPlay)});
+paper.addEventListener("click",function(){ playRound("paper",computerPlay)});
+scissors.addEventListener("click",function(){ playRound("scissors",computerPlay)});
+
+function playRound(playerSelectionLower,computerPlay){
+    
     let computerselection = computerPlay();
-    let playerSelectionLower = playerSelection.toLowerCase();
+ 
     if(playerSelectionLower===computerselection){
-        console.log ("It's a draw!");
-        return score;
-    } else if(playerSelectionLower=="rock" && computerselection=="scissors"){
+        scorePlayer.textContent = winCount;
+        scoreComputer.textContent = loseCount;
+        container.innerHTML +="It's a draw!<br>";
+        
+    } else if(playerSelectionLower=="rock" && computerselection=="scissors" ||
+                 playerSelectionLower=="paper" && computerselection=="rock" ||
+                 playerSelectionLower=="scissors" && computerselection=="paper"){
         winCount+=1;
-        console.log (`You won ${playerSelectionLower} beats ${computerselection}`);
-        return score;
-    } else if(playerSelectionLower=="rock" && computerselection=="paper"){
+        scorePlayer.textContent = winCount;
+        scoreComputer.textContent = loseCount;
+        container.innerHTML +=`You won ${playerSelectionLower} beats ${computerselection}<br>`;
+        
+    } else if(playerSelectionLower=="rock" && computerselection=="paper" ||
+                 playerSelectionLower=="paper" && computerselection=="scissors" ||
+                 playerSelectionLower=="scissors" && computerselection=="rock"){
         loseCount+=1;
-        console.log( `You lost ${computerselection} beats ${playerSelectionLower}`);
-        return score;
-    } else if(playerSelectionLower=="paper" && computerselection=="rock"){
-        winCount+=1;
-        console.log(`You won ${playerSelectionLower} beats ${computerselection}`);
-        return score;
-    } else if(playerSelectionLower=="paper" && computerselection=="scissors"){
-        loseCount+=1;
-        console.log(`You lost ${computerselection} beats ${playerSelectionLower}`);
-        return score;
-    } else if(playerSelectionLower=="scissors" && computerselection=="paper"){
-        winCount+=1;
-        console.log( `You won ${playerSelectionLower} beats ${computerselection}`);
-        return score;
-    } else if(playerSelectionLower=="scissors" && computerselection=="rock"){
-        loseCount+=1;
-        console.log(`You lost ${computerselection} beats ${playerSelectionLower}`);
-        return score;
-    }    
-}
-console.log(playRound(computerPlay));
-function game(){
-    for(let i = 0;i<5;i++){
-        playRound(computerPlay)
+        scorePlayer.textContent = winCount;
+        scoreComputer.textContent = loseCount;
+        container.innerHTML +=`You lost ${computerselection} beats ${playerSelectionLower}<br>`;
     }
-    if(winCount==5){
-        console.log("Congratulaions, You won!")
+    if (winCount >= 5 ) {
+        message.textContent = 'Game Over. You Win!';
 
-    } else if(loseCount==5) {
-        console.log("You lost,GIT GUD")
-    }
+        disableButtons();
+
+      } else if (loseCount >= 5) {
+        message.textContent = 'Game Over. You Lose!';
+
+        disableButtons();
+      }   
+   
+}
+
+function disableButtons() {
+    buttons.forEach(elem => {
+        elem.disabled = true;
+    })
 }
